@@ -66,7 +66,7 @@ CREATE TABLE `Course` (
 
 LOCK TABLES `Course` WRITE;
 /*!40000 ALTER TABLE `Course` DISABLE KEYS */;
-INSERT INTO `Course` VALUES ('1','shabake',3,0),('2','os',3,0),('3','sazeh',3,2);
+INSERT INTO `Course` VALUES ('1','shabake',3,0),('2','os',3,0),('3','sazeh',3,2),('4','amdad',4,1);
 /*!40000 ALTER TABLE `Course` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -128,10 +128,11 @@ DROP TABLE IF EXISTS `Food`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Food` (
-  `name` varchar(25) NOT NULL,
+  `name` varchar(25) DEFAULT NULL,
   `price` int DEFAULT NULL,
   `date` date DEFAULT NULL,
-  PRIMARY KEY (`name`)
+  `id` int NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -141,6 +142,7 @@ CREATE TABLE `Food` (
 
 LOCK TABLES `Food` WRITE;
 /*!40000 ALTER TABLE `Food` DISABLE KEYS */;
+INSERT INTO `Food` VALUES ('mahi',6000,'2020-10-10',1),('ghorme',6000,'2022-10-10',2),('ghayme',4000,'2023-10-10',4);
 /*!40000 ALTER TABLE `Food` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -152,12 +154,12 @@ DROP TABLE IF EXISTS `Food_Reserve`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Food_Reserve` (
-  `fnane` varchar(25) NOT NULL,
+  `fid` int NOT NULL,
   `sid` varchar(10) NOT NULL,
-  PRIMARY KEY (`fnane`,`sid`),
+  PRIMARY KEY (`fid`,`sid`),
   KEY `fk_Food_Reserve_1_idx` (`sid`),
-  CONSTRAINT `fk_Food_Reserve_1` FOREIGN KEY (`sid`) REFERENCES `Student` (`id`),
-  CONSTRAINT `fk_Food_Reserve_2` FOREIGN KEY (`fnane`) REFERENCES `Food` (`name`)
+  CONSTRAINT `fk_Food_Reserve_1` FOREIGN KEY (`sid`) REFERENCES `Student` (`sid`),
+  CONSTRAINT `fk_Food_Reserve_2` FOREIGN KEY (`fid`) REFERENCES `Food` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -167,6 +169,7 @@ CREATE TABLE `Food_Reserve` (
 
 LOCK TABLES `Food_Reserve` WRITE;
 /*!40000 ALTER TABLE `Food_Reserve` DISABLE KEYS */;
+INSERT INTO `Food_Reserve` VALUES (2,'9922752487'),(4,'9922752487'),(1,'9922762399'),(2,'9922762399');
 /*!40000 ALTER TABLE `Food_Reserve` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -191,7 +194,7 @@ CREATE TABLE `Instructor` (
 
 LOCK TABLES `Instructor` WRITE;
 /*!40000 ALTER TABLE `Instructor` DISABLE KEYS */;
-INSERT INTO `Instructor` VALUES ('4567891234',5);
+INSERT INTO `Instructor` VALUES ('4567891234',5),('5',10),('7',4),('8',2);
 /*!40000 ALTER TABLE `Instructor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -222,7 +225,7 @@ CREATE TABLE `Person` (
 
 LOCK TABLES `Person` WRITE;
 /*!40000 ALTER TABLE `Person` DISABLE KEYS */;
-INSERT INTO `Person` VALUES ('1234567891','arian','amorzegan',21,'','',0),('2345678912','iman','ras',20,'','',1),('3456789123','nima','alavi',22,'','',0),('4567891234','ali','hadad',45,NULL,NULL,NULL);
+INSERT INTO `Person` VALUES ('',NULL,NULL,NULL,NULL,NULL,NULL),('1234567891','arian','amorzegan',21,'','',0),('2345678912','iman','ras',20,'','',1),('3456789123','nima','alavi',22,'','',0),('4567891234','ali','hadad',45,NULL,NULL,2),('5','kamran','ads',55,'','',0),('6','mohammadreza','zaman',22,NULL,NULL,0),('7','alireza','taleb',32,NULL,NULL,1),('8','reza','babayi',52,NULL,NULL,0);
 /*!40000 ALTER TABLE `Person` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -243,7 +246,8 @@ CREATE TABLE `Section` (
   `instructorid` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_Section_2_idx` (`courseid`),
-  CONSTRAINT `fk_Section_1` FOREIGN KEY (`id`) REFERENCES `Instructor` (`id`),
+  KEY `fk_Section_1_idx` (`instructorid`),
+  CONSTRAINT `fk_Section_1` FOREIGN KEY (`instructorid`) REFERENCES `Instructor` (`id`),
   CONSTRAINT `fk_Section_2` FOREIGN KEY (`courseid`) REFERENCES `Course` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -254,6 +258,7 @@ CREATE TABLE `Section` (
 
 LOCK TABLES `Section` WRITE;
 /*!40000 ALTER TABLE `Section` DISABLE KEYS */;
+INSERT INTO `Section` VALUES ('1',25,NULL,1401,1,'1','5'),('2',25,NULL,1402,1,'1','8'),('3',25,NULL,1401,1,'4','7'),('4',20,NULL,1401,1,'2','5');
 /*!40000 ALTER TABLE `Section` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -284,6 +289,7 @@ CREATE TABLE `Section_Student` (
 
 LOCK TABLES `Section_Student` WRITE;
 /*!40000 ALTER TABLE `Section_Student` DISABLE KEYS */;
+INSERT INTO `Section_Student` VALUES ('1','1',1,0,0),('2','1',4,0,0),('3','2',1,1,15),('4','4',1,1,18);
 /*!40000 ALTER TABLE `Section_Student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -301,12 +307,9 @@ CREATE TABLE `Semester_Student` (
   `avg` int DEFAULT NULL,
   `year` int DEFAULT NULL,
   `semester` tinyint DEFAULT NULL,
-  `secstuid` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`idSemester_Student`),
   KEY `fk_Semester_Student_1_idx` (`stuid`),
-  KEY `fk_Semester_Student_2_idx` (`secstuid`),
-  CONSTRAINT `fk_Semester_Student_1` FOREIGN KEY (`stuid`) REFERENCES `Student` (`sid`),
-  CONSTRAINT `fk_Semester_Student_2` FOREIGN KEY (`secstuid`) REFERENCES `Section_Student` (`id`)
+  CONSTRAINT `fk_Semester_Student_1` FOREIGN KEY (`stuid`) REFERENCES `Student` (`sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -316,6 +319,7 @@ CREATE TABLE `Semester_Student` (
 
 LOCK TABLES `Semester_Student` WRITE;
 /*!40000 ALTER TABLE `Semester_Student` DISABLE KEYS */;
+INSERT INTO `Semester_Student` VALUES (1,'9922762399',0,0,1401,1),(2,'9922762399',12,15,1401,2),(3,'9922762399',16,14,1402,1),(4,'9922752487',14,12,1401,1),(5,'9922752487',12,14,1401,2);
 /*!40000 ALTER TABLE `Semester_Student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -356,4 +360,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-03  4:00:51
+-- Dump completed on 2023-07-03  4:40:11
