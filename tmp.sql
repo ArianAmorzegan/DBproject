@@ -327,9 +327,28 @@ CREATE TABLE `Section_Student` (
 
 LOCK TABLES `Section_Student` WRITE;
 /*!40000 ALTER TABLE `Section_Student` DISABLE KEYS */;
-INSERT INTO `Section_Student` VALUES ('1','1',1,1,0),('10','4',5,1,15),('11','4',5,1,18),('2','1',4,0,0),('3','2',1,1,15),('4','4',1,1,18),('5 ','2',1,1,14),('6','2',1,1,18),('7','3',4,1,14),('8','1',1,1,12),('9','4',5,1,18);
+INSERT INTO `Section_Student` VALUES ('1','1',1,1,0),('10','4',5,1,15),('11','4',5,1,18),('12','1',1,0,0),('13','3',1,0,0),('2','1',4,0,0),('3','2',1,1,15),('4','4',1,1,18),('5 ','2',1,1,14),('6','2',1,1,18),('7','3',4,1,14),('8','1',1,1,12),('9','4',5,1,18);
 /*!40000 ALTER TABLE `Section_Student` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `update_taken_units` BEFORE INSERT ON `Section_Student` FOR EACH ROW BEGIN
+	Update Semester_Student
+    set units_take = units_take + (SELECT unit from Section where  NEW.sectid = Section.id)
+    where Semester_Student.idSemester_Student = new.semstuid;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -366,6 +385,7 @@ CREATE TABLE `Semester_Student` (
   `avg` int DEFAULT NULL,
   `year` int DEFAULT NULL,
   `semester` tinyint DEFAULT NULL,
+  `units_take` int DEFAULT '0',
   PRIMARY KEY (`idSemester_Student`),
   KEY `fk_Semester_Student_1_idx` (`stuid`),
   CONSTRAINT `fk_Semester_Student_1` FOREIGN KEY (`stuid`) REFERENCES `Student` (`sid`)
@@ -378,7 +398,7 @@ CREATE TABLE `Semester_Student` (
 
 LOCK TABLES `Semester_Student` WRITE;
 /*!40000 ALTER TABLE `Semester_Student` DISABLE KEYS */;
-INSERT INTO `Semester_Student` VALUES (1,'9922762399',8,0,1401,1),(2,'9922762399',12,15,1401,2),(3,'9922762399',16,14,1402,1),(4,'9922752487',14,12,1401,1),(5,'9922752487',22,14,1401,2);
+INSERT INTO `Semester_Student` VALUES (1,'9922762399',8,0,1401,1,6),(2,'9922762399',12,15,1401,2,0),(3,'9922762399',16,14,1402,1,0),(4,'9922752487',14,12,1401,1,0),(5,'9922752487',22,14,1401,2,0);
 /*!40000 ALTER TABLE `Semester_Student` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -445,4 +465,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-03  6:15:05
+-- Dump completed on 2023-07-03  6:55:41
