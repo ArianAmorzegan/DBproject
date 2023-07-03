@@ -142,7 +142,7 @@ CREATE TABLE `Food` (
 
 LOCK TABLES `Food` WRITE;
 /*!40000 ALTER TABLE `Food` DISABLE KEYS */;
-INSERT INTO `Food` VALUES ('mahi',6000,'2020-10-10',1),('ghorme',6000,'2022-10-10',2),('ghayme',4000,'2023-10-10',4);
+INSERT INTO `Food` VALUES ('mahi',6000,'2020-10-10',1),('ghorme',6000,'2022-10-10',2),('kabab',8000,'2022-10-10',3),('ghayme',4000,'2023-10-10',4);
 /*!40000 ALTER TABLE `Food` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -169,7 +169,7 @@ CREATE TABLE `Food_Reserve` (
 
 LOCK TABLES `Food_Reserve` WRITE;
 /*!40000 ALTER TABLE `Food_Reserve` DISABLE KEYS */;
-INSERT INTO `Food_Reserve` VALUES (2,'9922752487'),(4,'9922752487'),(1,'9922762399'),(2,'9922762399');
+INSERT INTO `Food_Reserve` VALUES (2,'9922752487'),(4,'9922752487'),(1,'9922762399'),(2,'9922762399'),(3,'9922762399');
 /*!40000 ALTER TABLE `Food_Reserve` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -244,6 +244,7 @@ CREATE TABLE `Section` (
   `semester` tinyint DEFAULT NULL,
   `courseid` varchar(7) DEFAULT NULL,
   `instructorid` varchar(10) DEFAULT NULL,
+  `unit` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_Section_2_idx` (`courseid`),
   KEY `fk_Section_1_idx` (`instructorid`),
@@ -258,7 +259,7 @@ CREATE TABLE `Section` (
 
 LOCK TABLES `Section` WRITE;
 /*!40000 ALTER TABLE `Section` DISABLE KEYS */;
-INSERT INTO `Section` VALUES ('1',25,NULL,1401,1,'1','5'),('2',25,NULL,1402,1,'1','8'),('3',25,NULL,1401,1,'4','7'),('4',20,NULL,1401,1,'2','5');
+INSERT INTO `Section` VALUES ('1',25,NULL,1401,1,'1','5','2'),('2',25,NULL,1402,1,'1','8','3'),('3',25,NULL,1401,1,'4','7','4'),('4',20,NULL,1401,1,'2','5','5');
 /*!40000 ALTER TABLE `Section` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -289,7 +290,7 @@ CREATE TABLE `Section_Student` (
 
 LOCK TABLES `Section_Student` WRITE;
 /*!40000 ALTER TABLE `Section_Student` DISABLE KEYS */;
-INSERT INTO `Section_Student` VALUES ('1','1',1,0,0),('2','1',4,0,0),('3','2',1,1,15),('4','4',1,1,18);
+INSERT INTO `Section_Student` VALUES ('1','1',1,1,0),('10','4',5,1,15),('11','4',5,1,18),('2','1',4,0,0),('3','2',1,1,15),('4','4',1,1,18),('5 ','2',1,1,14),('6','2',1,1,18),('7','3',4,1,14),('8','1',1,1,12),('9','4',5,1,18);
 /*!40000 ALTER TABLE `Section_Student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -319,7 +320,7 @@ CREATE TABLE `Semester_Student` (
 
 LOCK TABLES `Semester_Student` WRITE;
 /*!40000 ALTER TABLE `Semester_Student` DISABLE KEYS */;
-INSERT INTO `Semester_Student` VALUES (1,'9922762399',0,0,1401,1),(2,'9922762399',12,15,1401,2),(3,'9922762399',16,14,1402,1),(4,'9922752487',14,12,1401,1),(5,'9922752487',12,14,1401,2);
+INSERT INTO `Semester_Student` VALUES (1,'9922762399',8,0,1401,1),(2,'9922762399',12,15,1401,2),(3,'9922762399',16,14,1402,1),(4,'9922752487',14,12,1401,1),(5,'9922752487',22,14,1401,2);
 /*!40000 ALTER TABLE `Semester_Student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -335,6 +336,7 @@ CREATE TABLE `Student` (
   `sid` varchar(10) DEFAULT NULL,
   `avg` int DEFAULT '0',
   `units` int DEFAULT '0',
+  `balance` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `foriegn` (`sid`),
   CONSTRAINT `fk_Student_1` FOREIGN KEY (`id`) REFERENCES `Person` (`id`)
@@ -347,7 +349,7 @@ CREATE TABLE `Student` (
 
 LOCK TABLES `Student` WRITE;
 /*!40000 ALTER TABLE `Student` DISABLE KEYS */;
-INSERT INTO `Student` VALUES ('1234567891','9922762399',0,0),('2345678912','9922752487',0,0);
+INSERT INTO `Student` VALUES ('1234567891','9922762399',0,10,12000),('2345678912','9922752487',0,5,NULL);
 /*!40000 ALTER TABLE `Student` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -360,4 +362,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-03  4:40:11
+-- Dump completed on 2023-07-03  5:45:02
