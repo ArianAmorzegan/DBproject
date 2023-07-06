@@ -10,49 +10,49 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 
 
-# query = """
-# SELECT id, final_date
-# FROM Section
-# WHERE final_date IS NOT NULL
-# """
-# try:
-#     mycursor.execute(query)
+query = """
+SELECT id, final_date
+FROM Section
+WHERE final_date IS NOT NULL
+"""
+try:
+    mycursor.execute(query)
 
-#     # Fetch all rows 
-#     exam_schedule = mycursor.fetchall()
+    # Fetch all rows 
+    exam_schedule = mycursor.fetchall()
 
-#     # Print the exam schedule
-#     for section in exam_schedule:
-#         section_id, final_date = section
-#         print(f"Section ID: {section_id}, Final Date: {final_date}")
+    # Print the exam schedule
+    for section in exam_schedule:
+        section_id, final_date = section
+        print(f"Section ID: {section_id}, Final Date: {final_date}")
 
-# except mysql.connector.Error as err:
-#     print(f"Error retrieving exam schedule: {err}")
+except mysql.connector.Error as err:
+    print(f"Error retrieving exam schedule: {err}")
 
 
 # -------------------------------------------------------------------------
 
-# query = """
-# SELECT id, date, status
-# FROM Attendance
-# """
+query = """
+SELECT id, date, status
+FROM Attendance
+"""
 
-# # Execute the query
-# mycursor.execute(query)
+# Execute the query
+mycursor.execute(query)
 
-# # Fetch all rows from the result set
-# rows = mycursor.fetchall()
+# Fetch all rows from the result set
+rows = mycursor.fetchall()
 
-# # Display the presence and absences
-# for row in rows:
-#     id = row[0]
-#     date = row[1]
-#     status = row[2]
+# Display the presence and absences
+for row in rows:
+    id = row[0]
+    date = row[1]
+    status = row[2]
 
-#     if status == 1:
-#         print(f"Presence - ID: {id}, Date: {date}")
-#     else:
-#         print(f"Absence - ID: {id}, Date: {date}")
+    if status == 1:
+        print(f"Presence - ID: {id}, Date: {date}")
+    else:
+        print(f"Absence - ID: {id}, Date: {date}")
 
 # ---------------------------------------------------------------------
 
