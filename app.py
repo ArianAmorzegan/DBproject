@@ -46,6 +46,51 @@ def delete_food():
     return jsonify({"message": "Food reservation deleted successfully"})
 
 
+@app.route("/schedule/", methods=["GET"])
+def show_schedule():
+    query_params = request.args
+    student_id = query_params.get("sid")
+    query = f"""SELECT student.id AS stid ,course.id AS course_id ,instructor.room_no AS class_room ,instructor.name AS teacher_name ,course.did AS department_id ,course.name AS course_name FROM((((student JOIN section_student)JOIN section)JOIN instructor)JOIN course) WHERE((student.sid = section_student.stid)AND (section_student.sectid = section.id)AND (section.courseid = course.id)AND (section.instructorid = instructor.id)AND (student.id = {student_id}));"""
+    cursor.execute(query)
+    tempResult = cursor.fetchall()
+    result = []
+    for i in tempResult:
+        result.append(
+            {
+                "stid": i[0],
+                "class_room": i[2],
+                "teacher_name": i[3],
+                "course_name": i[5],
+            }
+        )
+    return jsonify(result)
+
+
+@app.route("/food_schedule/", methods=["GET"])
+def food_schedule():
+    query = f"""SELECT food.name AS name ,food.price AS price ,food.date AS date FROM food;"""
+    cursor.execute(query)
+    tempResult = cursor.fetchall()
+    result = []
+    for i in tempResult:
+        result.append(
+            {
+                "food_name": i[0],
+                "price": i[1],
+                "date": i[2],
+            }
+        )
+    return jsonify(result)
+
+
+@app.route("/food_reserve_count/", methods=["GET"])
+def food_reserve_count():
+    query = f"  SELECT food.name AS food_name, COUNT(0) AS reserv_count FROM ((student st JOIN food_reserve fres ON ((st.sid = fres.sid))) JOIN food ON ((food.id = fres.fid))) GROUP BY food.name"
+    cursor.execute(query)
+    result = cursor.fetchall()
+    return jsonify(result)
+
+
 @app.route("/choose_section/", methods=["GET"])
 def choose_section():
     if (
